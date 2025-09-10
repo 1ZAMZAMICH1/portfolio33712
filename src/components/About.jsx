@@ -62,7 +62,6 @@ function About() {
         </div>
 
         <div className={styles.arsenalBlock}>
-          <button className={`${styles.navButton} ${styles.prev}`} onClick={handleSpeedUp}>‹</button>
           <div className={styles.scrollerContainer}>
             <div className={styles.scroller} ref={scrollerRef}>
               {skills.map((skill, index) => (
@@ -79,7 +78,6 @@ function About() {
               ))}
             </div>
           </div>
-          <button className={`${styles.navButton} ${styles.next}`} onClick={handleSpeedUp}>›</button>
         </div>
       </div>
     </section>

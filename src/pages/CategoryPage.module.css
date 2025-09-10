@@ -88,3 +88,25 @@
   transform: translateY(0);
   opacity: 1;
 }
+
+/* --- ВОТ ИСПРАВЛЕНИЯ ДЛЯ МОБИЛОК --- */
+
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 3rem;
+  }
+  .header {
+    display: flex; /* Делаем flex-контейнером */
+    flex-direction: column; /* Элементы друг под другом */
+    align-items: center; /* Центрируем */
+    margin-bottom: 2rem;
+  }
+  .backLink {
+    position: static; /* Убираем абсолютное позиционирование */
+    transform: none;
+    margin-bottom: 1rem; /* Добавляем отступ снизу */
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
