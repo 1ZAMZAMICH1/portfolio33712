@@ -1,0 +1,111 @@
+.footer {
+  background-color: #0a0a0a;
+  border-top: 1px solid #333;
+  padding: 4rem 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.column h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.2rem;
+  color: #888;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.navigation a,
+.contactsInfo a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1rem;
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.navigation a:hover,
+.contactsInfo a:hover {
+  color: #ffd700;
+}
+
+.identity {
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  height: 180px;
+}
+
+.nameLogo {
+  height: 30px;
+}
+
+.contactsInfo {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.socials {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.socials a {
+  font-size: 1.5rem;
+}
+
+.location {
+  font-family: 'IBM Plex Mono', monospace;
+  color: #555;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 3rem;
+  }
+  .column {
+    align-items: center;
+  }
+  .contactsInfo {
+    text-align: center;
+    align-items: center;
+  }
+  .identity {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .column h4 {
+    font-size: 1rem;
+  }
+  .navigation a,
+  .contactsInfo a {
+    font-size: 0.9rem;
+  }
+  .logo {
+    height: 60px;
+  }
+  .nameLogo {
+    height: 24px;
+  }
+}

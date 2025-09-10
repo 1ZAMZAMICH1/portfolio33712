@@ -1,0 +1,214 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 5vh 0;
+  overflow-y: auto;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  width: 90%;
+  max-width: 900px;
+  background-color: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  animation: scaleUp 0.3s ease 0.1s forwards;
+  border-radius: 8px;
+  overflow: visible;
+  margin: auto;
+}
+@keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+.closeButton {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: color 0.2s;
+}
+.closeButton:hover {
+  color: white;
+}
+
+.body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mainMedia {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: #000;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.navButton {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  border-radius: 9999px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+.navButton:hover {
+  background: rgba(0,0,0,0.7);
+}
+.nextButton {
+  left: auto;
+  right: 0.5rem;
+}
+
+.thumbnailContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+.thumbnailStrip {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  flex-grow: 1;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.thumbnailStrip::-webkit-scrollbar {
+  display: none;
+}
+.thumbnail {
+  width: 120px;
+  height: 70px;
+  flex-shrink: 0;
+  background-color: #000;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s, border-color 0.2s;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.thumbnail:hover {
+  opacity: 1;
+}
+.activeThumbnail {
+  opacity: 1;
+  border-color: #ffd700;
+}
+.thumbNavButton {
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.description {
+  text-align: justify;
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+  color: #ccc;
+}
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.metaIcon {
+  font-size: 1.5rem;
+  color: #ffd700;
+}
+.metaLabel {
+  font-size: 0.8rem;
+  color: #888;
+}
+.metaItem p {
+  margin: 0;
+}
+
+.footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #333;
+  text-align: right;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  background: #1a1a1a;
+}
+.footerCloseButton {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.footerCloseButton:hover {
+  background: #444;
+}
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 0;
+  }
+  .modal {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+  .header h2 {
+    font-size: 1.2rem;
+  }
+  .thumbnail {
+    width: 80px;
+    height: 50px;
+  }
+}

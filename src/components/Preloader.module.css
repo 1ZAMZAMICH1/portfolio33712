@@ -1,0 +1,57 @@
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 5px #ffd700);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 20px #ffd700);
+  }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.hiding {
+  transform: translateY(-100%);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  width: 150px;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.loadingText {
+  font-family: 'IBM Plex Mono', monospace; /* Строгий шрифт */
+  font-size: 1.5rem;
+  color: #ccc;
+  min-height: 2em; /* Чтобы не прыгал при смене текста */
+}
+
+/* Стилизуем курсор Typed.js */
+.loadingText :global(.typed-cursor) {
+  opacity: 1;
+  animation: blink 0.7s infinite;
+}

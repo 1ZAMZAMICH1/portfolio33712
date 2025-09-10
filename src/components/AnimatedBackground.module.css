@@ -1,0 +1,52 @@
+@keyframes scroll-up {
+  from { background-position-y: 0px; }
+  to { background-position-y: -1080px; }
+}
+
+@keyframes scroll-down {
+  from { background-position-y: 0px; }
+  to { background-position-y: 1080px; }
+}
+
+.animatedBackground {
+  /* ВОТ РЕШЕНИЕ: БЫЛО 'fixed', СТАЛО 'absolute' */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: flex;
+  overflow: hidden;
+}
+
+.animatedBackground::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1;
+}
+
+.bgColumn {
+  flex: 1;
+  height: 200%;
+  background-image: url('/564776.png');
+  background-size: auto 1080px;
+  background-repeat: repeat-y;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.scrollUp {
+  animation-name: scroll-up;
+  animation-duration: 40s;
+}
+
+.scrollDown {
+  animation-name: scroll-down;
+  animation-duration: 60s;
+}

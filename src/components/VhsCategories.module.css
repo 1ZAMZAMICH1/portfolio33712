@@ -1,0 +1,133 @@
+.section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  height: 100vh;
+  background-color: #000;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: flex 0.7s cubic-bezier(0.61, 1, 0.88, 1);
+}
+
+.container:hover .panel:not(:hover) { flex: 1; }
+.panel:hover { flex: 10; }
+
+.panel:nth-child(odd) { background-color: #000000; }
+.panel:nth-child(even) { background-color: #ffffff; }
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.5s 0.2s ease-in-out;
+  padding: 3rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.panel:hover .background { opacity: 1; }
+
+.hoverTitle {
+  font-family: 'VT323', monospace;
+  font-size: 4rem;
+  color: white;
+  text-shadow: 0 0 10px black;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.5s ease 0.4s;
+  align-self: center;
+}
+.panel:hover .hoverTitle { opacity: 1; transform: translateY(0); }
+
+.hoverPreview {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease 0.5s;
+}
+.panel:hover .hoverPreview { opacity: 1; transform: translateY(0); }
+
+.previewImage {
+  width: 200px;
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.overlayContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+.panel:hover .overlayContainer { opacity: 0; }
+
+.videoOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 70%; 
+  min-height: 70%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%) rotate(-90deg); 
+}
+.panel:nth-child(even) .videoOverlay { filter: invert(1); }
+
+.title {
+  font-family: 'VT323', monospace;
+  font-size: 5rem;
+  text-transform: uppercase;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+.panel:hover .title { opacity: 0; }
+.panel:nth-child(odd) .title { color: white; text-shadow: 0 0 5px black; }
+.panel:nth-child(even) .title { color: black; text-shadow: 0 0 5px white; }
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 3rem;
+  }
+  .hoverTitle {
+    font-size: 2.5rem;
+  }
+  .hoverPreview {
+    gap: 0.5rem;
+  }
+  .previewImage {
+    width: 100px;
+    height: 60px;
+  }
+}

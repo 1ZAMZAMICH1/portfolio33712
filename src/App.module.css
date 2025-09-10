@@ -1,0 +1,204 @@
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scroll-animation {
+  0% { opacity: 1; top: 8px; }
+  50% { opacity: 0; top: 20px; }
+  100% { opacity: 0; top: 20px; }
+}
+
+@keyframes scroll-up {
+  from { background-position-y: 0px; }
+  to { background-position-y: -1080px; }
+}
+
+@keyframes scroll-down {
+  from { background-position-y: 0px; }
+  to { background-position-y: 1080px; }
+}
+
+.App {
+  position: relative;
+  z-index: 1;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 2rem;
+  color: #ffd700;
+}
+
+.appHeader {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.photoContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vh;
+  height: 80vh;
+  max-width: 900px;
+  max-height: 900px;
+  z-index: 1;
+}
+
+.frameContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: spin 60s linear infinite;
+  background: conic-gradient(from 180deg at 50% 50%, #a67c00, #ffd700, #ffffc8, #ffd700, #a67c00);
+  mask-image: url('/76546.png');
+  -webkit-mask-image: url('/76546.png');
+  mask-size: contain;
+  -webkit-mask-size: contain;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+}
+
+.backFrame {
+  z-index: 3;
+}
+
+.frontFrame {
+  z-index: 5;
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+}
+
+.userPhoto {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 90vh;
+  width: auto;
+  z-index: 4;
+  filter: grayscale(1) drop-shadow(0px 0px 20px rgba(0,0,0,0.8));
+}
+
+.textContainer {
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+.nameImage {
+  max-width: 450px;
+  width: 90%;
+  height: auto;
+  margin-bottom: 0.5rem;
+}
+
+.role {
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.scrollDown {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: 24px;
+  height: 40px;
+  border: 2px solid #ffd700;
+  border-radius: 20px;
+}
+
+.scrollDown span {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background-color: #ffd700;
+  border-radius: 2px;
+  animation: scroll-animation 2s infinite;
+}
+
+.animatedBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  display: flex;
+  overflow: hidden;
+}
+
+.animatedBackground::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1;
+}
+
+.bgColumn {
+  flex: 1;
+  height: 200%;
+  background-image: url('/564776.png');
+  background-size: auto 1080px;
+  background-repeat: repeat-y;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.scrollUp {
+  animation-name: scroll-up;
+  animation-duration: 40s;
+}
+
+.scrollDown {
+  animation-name: scroll-down;
+  animation-duration: 60s;
+}
+
+/* --- ПРАВИЛЬНАЯ АДАПТАЦИЯ --- */
+
+@media (max-width: 900px) {
+  .photoContainer {
+    width: 110vw;
+    height: 110vw;
+  }
+  .userPhoto {
+    height: 75vh; /* Немного увеличил */
+  }
+  .textContainer {
+    bottom: 15vh; /* Немного поднял */
+  }
+  .nameImage {
+    max-width: 300px;
+  }
+  .role {
+    font-size: 1rem;
+  }
+}
