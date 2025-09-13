@@ -1,0 +1,11 @@
+# Содержимое для файла /netlify.toml
+
+[build]
+  # Команда для сборки твоего проекта (скорее всего, такая)
+  command = "npm run build"
+  # Папка, куда собирается сайт
+  publish = "dist"
+
+[functions]
+  # Папка, где лежат твои Netlify-функции
+  directory = "netlify/functions"
