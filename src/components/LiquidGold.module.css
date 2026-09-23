@@ -1,0 +1,95 @@
+.liquidContainer {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #020202; /* Почти черный */
+  overflow: hidden;
+  z-index: 0;
+}
+
+.blobMaster {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  filter: blur(80px) contrast(1.2); /* Смягчаем и расплавляем круги в единую лужу */
+}
+
+/* Шум поверх заливки, чтобы выглядело дорого и кинематографично, как пленка */
+.noiseOverlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+  opacity: 0.08; /* Еле заметный шум */
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.blob1, .blob2, .blob3, .blob4 {
+  position: absolute;
+  border-radius: 50%;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+}
+
+.blob1 {
+  width: 60vw; height: 60vw;
+  background: #a67c00; /* Темное золото */
+  top: -10%; left: -20%;
+  animation-name: float1;
+  animation-duration: 18s;
+  opacity: 0.6;
+}
+
+.blob2 {
+  width: 70vw; height: 70vw;
+  background: #ffd700; /* Яркое светящееся золото */
+  bottom: -30%; right: -20%;
+  animation-name: float2;
+  animation-duration: 22s;
+  opacity: 0.25;
+}
+
+.blob3 {
+  width: 50vw; height: 50vw;
+  background: #4a3600; /* Очень глубокий темный бронзовый */
+  top: 40%; left: 40%;
+  animation-name: float3;
+  animation-duration: 25s;
+  opacity: 0.7;
+}
+
+.blob4 {
+  width: 40vw; height: 40vw;
+  background: #ffb700; /* Оранжево-желтый акцент */
+  top: 10%; right: 10%;
+  animation-name: float4;
+  animation-duration: 19s;
+  opacity: 0.3;
+}
+
+/* Анимации плавного перетекания жидкого золота */
+@keyframes float1 {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(30%, 10%) scale(1.1) rotate(45deg); }
+  100% { transform: translate(10%, 30%) scale(0.9) rotate(90deg); }
+}
+
+@keyframes float2 {
+  0% { transform: translate(0, 0) scale(1.1) rotate(0deg); }
+  50% { transform: translate(-20%, -30%) scale(0.9) rotate(-45deg); }
+  100% { transform: translate(-40%, -10%) scale(1.2) rotate(-90deg); }
+}
+
+@keyframes float3 {
+  0% { transform: translate(0, 0) scale(0.8) rotate(0deg); }
+  50% { transform: translate(-30%, 10%) scale(1.2) rotate(60deg); }
+  100% { transform: translate(-10%, -20%) scale(0.9) rotate(120deg); }
+}
+
+@keyframes float4 {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(20%, -30%) scale(1.15) rotate(-30deg); }
+  100% { transform: translate(-20%, -10%) scale(0.85) rotate(-60deg); }
+}

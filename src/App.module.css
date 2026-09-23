@@ -1,27 +1,133 @@
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes scroll-animation {
-  0% { opacity: 1; top: 8px; }
-  50% { opacity: 0; top: 20px; }
-  100% { opacity: 0; top: 20px; }
+  0% {
+    opacity: 1;
+    top: 8px;
+  }
+
+  50% {
+    opacity: 0;
+    top: 20px;
+  }
+
+  100% {
+    opacity: 0;
+    top: 20px;
+  }
 }
 
 @keyframes scroll-up {
-  from { background-position-y: 0px; }
-  to { background-position-y: -1080px; }
+  from {
+    background-position-y: 0px;
+  }
+
+  to {
+    background-position-y: -1080px;
+  }
 }
 
 @keyframes scroll-down {
-  from { background-position-y: 0px; }
-  to { background-position-y: 1080px; }
+  from {
+    background-position-y: 0px;
+  }
+
+  to {
+    background-position-y: 1080px;
+  }
+}
+
+@keyframes global-scanline {
+  from {
+    background-position-y: 0;
+  }
+
+  to {
+    background-position-y: 200px;
+  }
+}
+
+@keyframes logo-glitch {
+  0% {
+    transform: translate(0) scale(1) skewX(0);
+    filter: brightness(1);
+  }
+
+  20% {
+    transform: translate(-10px, 15px) scale(1.1) skewX(20deg);
+    filter: drop-shadow(10px 0 0 red) drop-shadow(-10px 0 0 blue) brightness(3);
+  }
+
+  40% {
+    transform: translate(15px, -10px) scale(0.9) skewY(-15deg);
+    filter: invert(0.8);
+  }
+
+  60% {
+    transform: translate(-20px, 5px) scale(1.2) skewX(-30deg);
+    filter: contrast(4) brightness(2);
+  }
+
+  80% {
+    transform: translate(10px, -20px) scale(0.9);
+    filter: hue-rotate(90deg) brightness(4);
+  }
+
+  100% {
+    transform: translate(0) scale(1) skewX(0);
+    filter: brightness(1);
+  }
 }
 
 .App {
   position: relative;
   z-index: 1;
+}
+
+.globalTerminalOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  /* Cover EVERYTHING! */
+  pointer-events: none;
+  /* Allow clicks to pass through */
+}
+
+.globalTerminalOverlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+  /* Раньше здесь стояла жесткая черная виньетка box-shadow: inset. Удалил! */
+  z-index: 2;
+  pointer-events: none;
+}
+
+.globalTerminalOverlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, rgba(255, 215, 0, 0.08) 2px, transparent 4px);
+  background-size: 100% 4px;
+  animation: global-scanline 4s linear infinite;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .loader {
@@ -33,11 +139,149 @@
   color: #ffd700;
 }
 
-.appHeader {
+/* === OS ARCHITECTURE === */
+.osWindow {
   position: relative;
-  min-height: 100vh;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
+  /* Не даем сайту скроллиться глобально! */
+  background-color: #000;
+}
+
+.osContent {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  /* Скролл полностью отключен на всех 4-х страницах! */
+  overflow: hidden;
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.contentGlitching {
+  /* Эффект выключения старого терминала / ТВ */
+  opacity: 0;
+  transform: scaleY(0.005) scaleX(1.1);
+  filter: brightness(4) contrast(3) blur(2px) drop-shadow(0 0 30px #ffd700);
+}
+
+.homeViewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* Строго блокируем любой лишний скролл! */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ==================================================================== */
+/*                      МЕНЮ НАВИГАЦИИ (ВЕРТИКАЛЬНОЕ БОКОВОЕ)           */
+/* ==================================================================== */
+
+.osMenu {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0px; 
+  z-index: 9000; /* Подняли еще выше, почти как оверлей */
+  border-right: 2px solid rgba(255, 215, 0, 0.6); /* Сделали границу ярче и толще */
+  background: rgba(5, 5, 5, 0.95); /* Более плотный черный фон */
+  backdrop-filter: blur(15px);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.9), 5px 0 15px rgba(255, 215, 0, 0.15); /* Тень падает прямо на контент */
+}
+
+.osMenu button {
+  background: transparent;
+  border: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px; /* Чуть крупнее */
+  font-weight: bold;
+  color: #999; /* Гораздо светлее и заметнее, чем было (#555) */
+  cursor: pointer;
+  letter-spacing: 4px;
+  padding: 30px 20px; 
+  /* МАГИЯ ТУТ: Делает текст вертикальным, читающимся снизу вверх */
+  writing-mode: vertical-rl; 
+  transform: rotate(180deg);
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  text-transform: uppercase;
+  border-left: 2px solid transparent; 
+}
+
+.osMenu button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  letter-spacing: 8px;
+}
+
+.osMenu button.activeTab {
+  color: #000;
+  background: #ffd700; /* Резкая желтая заливка */
+  font-weight: 900;
+  letter-spacing: 6px;
+  border-left: 5px solid #fff; 
+  box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.5);
+  outline: 1px solid #ffd700;
+  outline-offset: -4px;
+}
+
+.bgParallax {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Движения (наклоны и параллакс) полностью убраны */
+  z-index: 10;
+}
+
+.transitionLogoBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  max-width: 600px;
+  opacity: 0.05;
+  /* Едва заметен в покое, если просвечивает */
+  z-index: 0;
+  pointer-events: none;
+}
+
+.transitionLogoBg img {
+  width: 100%;
+  height: auto;
+  filter: grayscale(1);
+  transition: all 0.2s;
+}
+
+.logoGlitching {
+  animation: logo-glitch 0.2s infinite;
+  opacity: 0.6 !important;
+  /* Ярко вспыхивает во время глитча! */
+  filter: grayscale(0) !important;
+}
+
+.mouseSpotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  /* Мягкий желтоватый фонарик, ездящий за мышкой поверх каллиграфии */
+  background: radial-gradient(800px circle at calc(var(--mouseX, 0) * 50vw + 50vw) calc(var(--mouseY, 0) * 50vh + 50vh), rgba(255, 215, 0, 0.15), transparent 50%);
+  mix-blend-mode: color-dodge;
 }
 
 .photoContainer {
@@ -45,6 +289,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  /* Движения отключены */
   width: 80vh;
   height: 80vh;
   max-width: 900px;
@@ -85,7 +330,7 @@
   height: 90vh;
   width: auto;
   z-index: 4;
-  filter: grayscale(1) drop-shadow(0px 0px 20px rgba(0,0,0,0.8));
+  filter: grayscale(1) drop-shadow(0px 0px 20px rgba(0, 0, 0, 0.8));
 }
 
 .textContainer {
@@ -109,11 +354,21 @@
   margin-bottom: 0.5rem;
 }
 
-.role {
-  font-size: 1.2rem;
-  letter-spacing: 3px;
+.roleContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.roleLine {
+  font-size: 1.1rem;
+  letter-spacing: 5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
+  color: #fff;
+  font-family: inherit;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 1);
 }
 
 .scrollDown {
@@ -158,7 +413,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  /* Очень темная виньетка, чтобы фон не отвлекал */
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.98) 90%);
   z-index: 1;
 }
 
@@ -189,16 +445,78 @@
     width: 110vw;
     height: 110vw;
   }
+
   .userPhoto {
-    height: 75vh; /* Немного увеличил */
+    height: 75vh;
+    /* Немного увеличил */
   }
+
   .textContainer {
-    bottom: 15vh; /* Немного поднял */
+    bottom: 15vh;
+    /* Немного поднял */
   }
+
   .nameImage {
     max-width: 300px;
   }
+
   .role {
     font-size: 1rem;
+  }
+
+  /* МЕНЮ НАВИГАЦИИ (МОБИЛЬНАЯ ВЕРСИЯ - НИЖНЯЯ ПАНЕЛЬ) */
+  .osMenu {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    height: 70px;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    border-right: none;
+    border-top: 2px solid rgba(255, 215, 0, 0.6); /* Золотая крышка вместо боковины */
+    background: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.9), 0 -5px 15px rgba(255, 215, 0, 0.15);
+    padding: 0;
+  }
+
+  .osMenu button {
+    writing-mode: horizontal-tb;
+    transform: none;
+    padding: 0;
+    font-size: 11px;
+    font-weight: bold;
+    color: #999;
+    letter-spacing: 1px;
+    border-left: none;
+    border-top: 2px solid transparent;
+    border-bottom: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .osMenu button:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .osMenu button.activeTab {
+    border-bottom: none;
+    border-left: none;
+    background: #ffd700;
+    color: #000;
+    box-shadow: 0px 0px 20px rgba(255, 215, 0, 0.5);
+    outline: 1px solid #ffd700;
+    outline-offset: -3px;
+    /* На мобилке активная кнопка чуть-чуть выдвигается вверх */
+    transform: translateY(-5px);
+    font-weight: 900;
   }
 }

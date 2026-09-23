@@ -63,12 +63,20 @@
 .mainMedia {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  /* Убрали жесткий aspect-ratio: 16 / 9, чтобы длинные картинки показывались целиком */
   background-color: #000;
   margin-bottom: 1rem;
   border-radius: 6px;
   overflow: hidden;
   cursor: pointer;
+}
+
+.mainMedia img, 
+.mainMedia video {
+  width: 100%;
+  height: auto !important; /* Заставляем рендерить в полный рост */
+  display: block;
+  object-fit: contain !important; /* На всякий случай блокируем обрезку */
 }
 .navButton {
   position: absolute;
@@ -145,10 +153,11 @@
 }
 
 .description {
-  text-align: justify;
-  margin-bottom: 1rem;
-  white-space: pre-wrap;
-  color: #ccc;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: #a0a0b0;
+  white-space: pre-wrap; /* Это сохранит абзацы и переносы строк! */
 }
 .metaGrid {
   display: grid;

@@ -1,12 +1,14 @@
 .contactsSection {
   position: relative;
-  background-color: #000;
-  padding: 10vh 5vw;
+  background-color: transparent; /* Убрал черный цвет, чтобы страница не была черным пятном */
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 5vh 5vw;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  min-height: 80vh;
 }
 
 .grid {
@@ -107,7 +109,47 @@
 .instagram { --network-color: #d6249f; }
 
 @media (max-width: 900px) {
+  .contactsSection {
+    padding: 10px;
+    padding-bottom: 70px; /* Чтобы центр рассчитывался чуть выше, над меню */
+    align-items: center; /* ВОЗВРАЩАЕМ ПО ЦЕНТРУ ЭКРАНА! */
+  }
+
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; 
+    gap: 16px; /* Чуть увеличим зазоры, место есть! */
+  }
+
+  .card {
+    padding: 16px 20px 14px 20px; /* Дадим карточкам дышать (сделаем жирнее) */
+    border-radius: 12px;
+  }
+
+  .networkIcon {
+    width: 30px;
+    height: 30px;
+    top: 10px;
+    right: 10px;
+    font-size: 1rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .userName {
+    font-size: 1rem;
+    margin-bottom: 0px;
+  }
+
+  .userHandle {
+    font-size: 0.8rem;
+  }
+
+  .actionButton {
+    margin-top: 10px;
+    padding: 6px;
+    font-size: 0.85rem;
   }
 }

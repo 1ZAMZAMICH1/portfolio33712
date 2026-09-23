@@ -19,10 +19,31 @@
   .content {
     max-width: 90vw;
     max-height: 90vh;
+    overflow-y: auto; /* Добавляем скролл для длинных картинок! */
+    overflow-x: hidden;
+    position: relative;
+    /* Убираем жесткий background, чтобы не мешал PNG с прозрачностью, но скролл будет */
   }
+  
+  /* Кастомизируем скроллбар для красоты */
+  .content::-webkit-scrollbar {
+    width: 6px;
+  }
+  .content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+  }
+
   .content > * {
+    width: auto;
     max-width: 100%;
-    max-height: 90vh;
+    /* Убираем max-height: 90vh, чтобы картинка могла раскрыться по высоте! */
+    height: auto;
+    display: block;
+    margin: 0 auto;
   }
   
   .navButton {

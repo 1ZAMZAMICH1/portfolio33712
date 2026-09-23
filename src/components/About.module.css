@@ -24,26 +24,7 @@
   position: relative;
 }
 
-.aboutSection::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 70%);
-  box-shadow: inset 0 0 100px 50px rgba(0, 0, 0, 0.7);
-  z-index: 2;
-  pointer-events: none;
-}
-
-.aboutSection::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-image: repeating-linear-gradient(to bottom, transparent 0, rgba(255, 215, 0, 0.08) 2px, transparent 4px);
-  background-size: 100% 4px;
-  animation: scanline-anim 4s linear infinite;
-  z-index: 1;
-  pointer-events: none;
-}
+/* Терминальный оверлей переехал глобально в App.module.css */
 
 .textContainer {
   position: relative;

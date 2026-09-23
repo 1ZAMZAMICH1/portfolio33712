@@ -4,14 +4,98 @@
   align-items: center;
   padding: 0;
   height: 100vh;
-  background-color: #000;
+  width: 100vw;
+  /* Убираем черный фон, чтобы было видно задний план сайта (терминал) */
+  background-color: transparent; 
+  /* Сдвигаем чуть вправо, чтобы окно не прилипало к боковому меню */
+  padding-left: 5vw;
+}
+
+/* ========================================= */
+/* УНИКАЛЬНЫЙ ФОН: ТАКТИЧЕСКАЯ СЕТКА (BLUEPRINT) */
+/* ========================================= */
+.tacticalGrid {
+  position: absolute;
+  inset: 0;
+  background-color: #020202;
+  /* Рисуем неоновую сетку (мелкую и крупную) */
+  background-image: 
+    linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(255, 215, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+  background-position: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tacticalGrid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Легкое затемнение по краям (виньетка) + радиальный свет в центре */
+  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.9) 100%);
+  pointer-events: none;
+}
+
+/* Сканирующий зеленый лазер по сетке */
+.scannerLine {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.3);
+  animation: radar-sweep 6s linear infinite;
+}
+
+@keyframes radar-sweep {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  
+  /* УМЕНЬШАЕМ И УПАКОВЫВАЕМ */
+  width: 65vw;
+  height: 75vh;
+  max-width: 1200px;
+  
+  /* ДИЗАЙН ОС-ОКНА */
+  background-color: #050505;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  
+  /* Отступ сверху под декоративную шапку окна */
+  padding-top: 30px; 
+}
+
+/* ДЕКОРАТИВНАЯ "ШАПКА" ОКНА (HEADER) */
+.container::before {
+  content: 'ARCHIVE_DECK.exe // 4 ЗАПИСИ ОБНАРУЖЕНО';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
+  height: 30px;
+  background: #ffd700;
+  color: #000;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+  z-index: 10;
+  box-sizing: border-box;
 }
 
 .panel {
@@ -25,8 +109,8 @@
   transition: flex 0.7s cubic-bezier(0.61, 1, 0.88, 1);
 }
 
-.container:hover .panel:not(:hover) { flex: 1; }
-.panel:hover { flex: 10; }
+.container:hover .panel:not(.panelActive) { flex: 1; }
+.panelActive { flex: 10; }
 
 .panel:nth-child(odd) { background-color: #000000; }
 .panel:nth-child(even) { background-color: #ffffff; }
@@ -47,7 +131,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.panel:hover .background { opacity: 1; }
+.panelActive .background { opacity: 1; }
 
 .hoverTitle {
   font-family: 'VT323', monospace;
@@ -59,7 +143,7 @@
   transition: all 0.5s ease 0.4s;
   align-self: center;
 }
-.panel:hover .hoverTitle { opacity: 1; transform: translateY(0); }
+.panelActive .hoverTitle { opacity: 1; transform: translateY(0); }
 
 .hoverPreview {
   display: flex;
@@ -70,16 +154,22 @@
   transform: translateY(20px);
   transition: all 0.5s ease 0.5s;
 }
-.panel:hover .hoverPreview { opacity: 1; transform: translateY(0); }
+.panelActive .hoverPreview { opacity: 1; transform: translateY(0); }
 
 .previewImage {
   width: 200px;
   height: 120px;
-  background-size: cover;
-  background-position: center;
   border-radius: 4px;
   border: 2px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.previewImage img, .previewImage video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .overlayContainer {
@@ -91,7 +181,7 @@
   z-index: 1;
   transition: opacity 0.3s ease;
 }
-.panel:hover .overlayContainer { opacity: 0; }
+.panelActive .overlayContainer { opacity: 0; }
 
 .videoOverlay {
   position: absolute;
@@ -112,22 +202,56 @@
   z-index: 2;
   transition: opacity 0.3s ease;
 }
-.panel:hover .title { opacity: 0; }
+.panelActive .title { opacity: 0; }
 .panel:nth-child(odd) .title { color: white; text-shadow: 0 0 5px black; }
 .panel:nth-child(even) .title { color: black; text-shadow: 0 0 5px white; }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .section {
+    padding-left: 0; /* Убираем сдвиг, центрируем */
+    padding-bottom: 70px; /* Отступ от нижнего бара навигации */
+  }
+
+  .container {
+    width: 95vw; /* Делаем окно почти на всю ширину мобилки */
+    height: 75vh; /* Высота под мобильный экран */
+    border-radius: 8px; /* Добавим скругления для мобилки */
+  }
+
+  .container::before {
+    font-size: 10px; /* Уменьшаем шапку */
+    padding-left: 10px;
+  }
+
   .title {
-    font-size: 3rem;
+    font-size: 2.2rem; /* Уменьшаем шрифты категорий */
   }
+
+  .panel {
+    padding: 10px;
+  }
+
   .hoverTitle {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
+    text-align: center;
   }
+
   .hoverPreview {
     gap: 0.5rem;
+    flex-wrap: wrap; /* Чтобы превьюхи не сплющились в 1 слой, а перенеслись */
+  }
+
+  .previewImage {
+    width: 45%; /* По 2 работы в ряд */
+    height: 70px;
+  }
+}
+
+@media (max-width: 400px) {
+  .title {
+    font-size: 1.8rem;
   }
   .previewImage {
-    width: 100px;
-    height: 60px;
+    height: 50px;
   }
 }

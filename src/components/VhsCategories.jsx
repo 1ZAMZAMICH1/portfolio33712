@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProjects } from '../hooks/useProjects';
 import styles from './VhsCategories.module.css';
@@ -11,20 +12,41 @@ const categories = [
 
 function VhsCategories() {
   const { projects, loading } = useProjects();
+  const [hoveredIdx, setHoveredIdx] = useState(null);
 
   return (
     <section id="works" className={styles.section}>
+      {/* 
+        Уникальный тактический "Blueprint" фон 
+        Специально для раздела работ!
+      */}
+      <div className={styles.tacticalGrid}>
+        <div className={styles.scannerLine}></div>
+      </div>
+      
       <div className={styles.container}>
-        {categories.map((category) => {
+        {categories.map((category, idx) => {
           const previewProjects = projects.filter(p => p.category === category.internalSlug).slice(0, 4);
             
           return (
-            <Link to={`/category/${category.slug}`} key={category.slug} className={styles.panel}>
+            <Link 
+              to={`/category/${category.slug}`} 
+              key={category.slug} 
+              className={`${styles.panel} ${hoveredIdx === idx ? styles.panelActive : ''}`}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
+            >
               <div className={styles.background}>
                 <h4 className={styles.hoverTitle}>{category.title}</h4>
                 <div className={styles.hoverPreview}>
                   {!loading && previewProjects.map(p => (
-                    <div key={p.id} className={styles.previewImage} style={{ backgroundImage: `url(${p.imageUrl})` }}></div>
+                    <div key={p.id} className={styles.previewImage}>
+                      {p.imageUrl?.match(/\.(mp4|webm)$/i) ? (
+                        <video src={p.imageUrl} autoPlay loop muted playsInline />
+                      ) : (
+                        <img src={p.imageUrl} alt="" />
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>

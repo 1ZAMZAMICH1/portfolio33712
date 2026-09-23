@@ -20,13 +20,16 @@ export function useProjects() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.get('/.netlify/functions/getProjects');
+      // Идем через API GitHub, чтобы избежать жесткого кэширования (которое ломает отображение свежих изменений).
+      // Ответ API содержит актуальные файлы.
+      const response = await axios.get(API_URL);
+      const fileContent = response.data.files[FILENAME].content;
+      const parsedData = JSON.parse(fileContent);
 
       // --- ГЛАВНАЯ ЗАЩИТА ТУТ ---
-      // Проверяем, что ответ вообще есть, и что в нем есть массив .works
-      if (response.data && Array.isArray(response.data.works)) {
+      if (parsedData && Array.isArray(parsedData.works)) {
         // Если все ОК - сохраняем данные
-        setData(response.data);
+        setData(parsedData);
       } else {
         // Если пришла какая-то дичь - считаем это ошибкой
         throw new Error('Получены некорректные данные от сервера');
