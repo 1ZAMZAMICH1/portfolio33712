@@ -79,6 +79,13 @@
   white-space: pre;
   position: relative;
   z-index: 1;
+
+  /* ЛЕКАРСТВО ОТ СМЕЩЕНИЯ НА ТЕЛЕФОНАХ */
+  /* Телефоны (особенно iPhone и Chrome Android) принудительно увеличивают мелкий текст (< 10px) 
+     чтобы его можно было читать. Это ломает ASCII блоки в кашу. 
+     text-size-adjust отключает это "умное" масштабирование! */
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
 }
 
 /* ======================================================== */
@@ -86,18 +93,19 @@
 /* ======================================================== */
 @media (max-width: 900px) {
   .asciiText {
-    /* Если мобильный арт не влезает или слишком мелкий, меняй font-size тут */
+    /* Для планшетов */
     font-size: 0.8vw;
-    /* Если он сплющен, меняй line-height тут (например, 1.2 или 0.9) */
-    line-height: normal;
+    line-height: 1.15;
   }
 }
 
-@media (max-width: 1px) {
+@media (max-width: 500px) {
   .asciiText {
-    /* Настройка для самых узких телефонов (вертикальных) */
-    font-size: 1.2vw;
-    line-height: normal;
-    letter-spacing: 0px;
+    /* Для телефонов. 
+       Вернул 500px обратно! Делай больше/меньше font-size именно тут: */
+    font-size: 1.5vw; 
+    /* Фиксированная высота строки, чтобы блоки █ не налезали друг на друга */
+    line-height: 1.1; 
+    letter-spacing: 0.5px;
   }
 }

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const GIST_ID = '097b310908113d1547c991aad195dd01';
 const FILENAME = 'database.json';
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN;
+// ТОКЕН БОЛЬШЕ НЕ ХРАНИТСЯ НА ФРОНТЕНДЕ!
 
 const API_URL = `https://api.github.com/gists/${GIST_ID}`;
 
@@ -45,25 +45,27 @@ export function useProjects() {
     }
   }, []);
   
-  const updateProjects = async (newData) => {
-    // ... (эта функция остается без изменений)
+  const updateProjects = async (newData, username, password) => {
     try {
-      await axios.patch(API_URL, {
-        files: {
-          [FILENAME]: {
-            content: JSON.stringify(newData, null, 2),
-          },
-        },
-      }, {
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-        },
+      // ТЕПЕРЬ МЫ ОТПРАВЛЯЕМ ЗАПРОС НЕ НА GITHUB, А НА НАШУ ФУНКЦИЮ NETLIFY!
+      // Там на сервере проверится пароль и сервер сам обновит базу.
+      const response = await axios.post('/.netlify/functions/saveProjects', {
+        username,
+        password,
+        data: newData
       });
-      setData(newData);
+      
+      if (response.data.success) {
+        setData(newData);
+      }
     } catch (e) {
       setError(e);
-      console.error("Failed to update projects:", e);
-      alert('Ошибка при сохранении на Gist!');
+      console.error("Failed to update projects via Netlify:", e);
+      if (e.response && e.response.status === 401) {
+        alert('Ошибка доступа: Неверный логин или пароль для сохранения!');
+      } else {
+        alert('Ошибка при сохранении на сервере!');
+      }
     }
   };
 
@@ -78,6 +80,6 @@ export function useProjects() {
     loading, 
     error, 
     setProjects: (newWorks) => setData(prev => ({ ...prev, works: newWorks })), 
-    saveProjects: (newWorks) => updateProjects({ ...data, works: newWorks }) 
+    saveProjects: (newWorks, username, password) => updateProjects({ ...data, works: newWorks }, username, password) 
   };
 }

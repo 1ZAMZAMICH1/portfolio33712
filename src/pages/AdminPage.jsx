@@ -78,7 +78,7 @@ export default function AdminPage() {
       updatedProjects = [{ ...formData, id: Date.now().toString() }, ...projects];
     }
     setProjects(updatedProjects);
-    await saveProjects(updatedProjects);
+    await saveProjects(updatedProjects, username, password);
     setIsSaving(false);
     closeForm();
   };
@@ -88,7 +88,7 @@ export default function AdminPage() {
     if (window.confirm('Точно удалить проект?')) {
       const updatedProjects = projects.filter(p => p.id !== id);
       setProjects(updatedProjects);
-      await saveProjects(updatedProjects);
+      await saveProjects(updatedProjects, username, password);
     }
   };
 
@@ -108,7 +108,7 @@ export default function AdminPage() {
 
     setProjects(updatedGlobalProjects);
     setDraggedItemIdx(null);
-    await saveProjects(updatedGlobalProjects);
+    await saveProjects(updatedGlobalProjects, username, password);
   };
 
   if (!isAuthenticated) {
