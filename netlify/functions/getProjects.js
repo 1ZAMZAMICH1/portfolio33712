@@ -1,11 +1,11 @@
 // Содержимое для файла: /netlify/functions/getProjects.js
 
-const axios = require('axios');
+import axios from 'axios';
 
 // Прямая ссылка на твой "сырой" JSON-файл на GitHub
 const GIST_URL = 'https://gist.githubusercontent.com/1ZAMZAMICH1/097b310908113d1547c991aad195dd01/raw/database.json';
 
-exports.handler = async function(event, context) {
+export const handler = async function(event, context) {
   try {
     const response = await axios.get(GIST_URL);
 
