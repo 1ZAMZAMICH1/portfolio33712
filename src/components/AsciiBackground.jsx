@@ -3,24 +3,36 @@ import styles from './AsciiBackground.module.css';
 
 export default function AsciiBackground() {
   const [ascii, setAscii] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
 
   useEffect(() => {
-    // Выбираем файл в зависимости от ширины экрана (мобилка или ПК)
-    const isMobile = window.innerWidth <= 900;
-    const artFile = isMobile ? '/ascii-art (4).txt' : '/ascii-art (2).txt';
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 900);
+    };
     
-    fetch(artFile)
-      .then(res => res.text())
-      .then(text => setAscii(text))
-      .catch(console.error);
-  }, []);
+    window.addEventListener('resize', handleResize);
+    
+    // Грузим тяжелый текст только на ПК, на мобилах теперь идеальная картинка!
+    if (!isMobile) {
+      fetch('/ascii-art (2).txt')
+        .then(res => res.text())
+        .then(text => setAscii(text))
+        .catch(console.error);
+    }
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile]);
 
   return (
     <div className={styles.asciiContainer}>
       {/* GPU-ускоренный луч света с выжигающим свечением */}
       <div className={styles.lightSweeper}></div>
 
-      <pre className={styles.asciiText}>{ascii}</pre>
+      {isMobile ? (
+        <img src="/ascii-art.png" alt="ASCII Art" className={styles.mobileImage} />
+      ) : (
+        <pre className={styles.asciiText}>{ascii}</pre>
+      )}
     </div>
   );
 }
