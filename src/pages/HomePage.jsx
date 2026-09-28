@@ -23,12 +23,13 @@ function HomePage() {
 
   return (
     <div className={styles.osWindow}>
-      {/* ASCII-фон ТОЛЬКО на главной странице */}
-      {activeTab === 'home' && (
-        <div className={styles.bgParallax}>
-          <AsciiBackground />
-        </div>
-      )}
+      {/* ASCII-фон ТОЛЬКО на главной странице - Не демонтируем, просто скрываем! */}
+      <div 
+        className={styles.bgParallax}
+        style={{ display: activeTab === 'home' ? 'block' : 'none' }}
+      >
+        <AsciiBackground />
+      </div>
 
       {/* Огромный глитчующий логотип на заднем фоне (виден при сворачивании окон) */}
       <div className={styles.transitionLogoBg}>
@@ -37,28 +38,40 @@ function HomePage() {
 
       {/* Окно активной программы с плавным ТВ-переходом */}
       <main className={`${styles.osContent} ${isSwitching ? styles.contentGlitching : ''}`}>
-        {activeTab === 'home' && (
-          <div className={styles.homeViewport}>
-            <div className={styles.photoContainer}>
-              <div className={`${styles.frameContainer} ${styles.backFrame}`}></div>
-              <div className={`${styles.frameContainer} ${styles.frontFrame}`}></div>
-            </div>
+        
+        {/* ГЛАВНАЯ СТРАНИЦА */}
+        <div 
+          className={styles.homeViewport} 
+          style={{ display: activeTab === 'home' ? '' : 'none' }}
+        >
+          <div className={styles.photoContainer}>
+            <div className={`${styles.frameContainer} ${styles.backFrame}`}></div>
+            <div className={`${styles.frameContainer} ${styles.frontFrame}`}></div>
+          </div>
 
-            <img src="/my-photo.png" alt="Портрет" className={styles.userPhoto} />
+          <img src="/my-photo.png" alt="Портрет" className={styles.userPhoto} />
 
-            <div className={styles.textContainer}>
-              <img src="/3456743.png" alt="Имя Фамилия" className={styles.nameImage} />
-              <div className={styles.roleContainer}>
-                <span className={styles.roleLine}>ГРАФИЧЕСКИЙ ДИЗАЙНЕР</span>
-                <span className={styles.roleLine}>FRONTEND-РАЗРАБОТЧИК</span>
-              </div>
+          <div className={styles.textContainer}>
+            <img src="/3456743.png" alt="Имя Фамилия" className={styles.nameImage} />
+            <div className={styles.roleContainer}>
+              <span className={styles.roleLine}>ГРАФИЧЕСКИЙ ДИЗАЙНЕР</span>
+              <span className={styles.roleLine}>FRONTEND-РАЗРАБОТЧИК</span>
             </div>
           </div>
-        )}
+        </div>
 
-        {activeTab === 'works' && <VhsCategories />}
-        {activeTab === 'about' && <About />}
-        {activeTab === 'contacts' && <Contacts />}
+        {/* ДРУГИЕ СТРАНИЦЫ - Сохраняем в DOM, скрываем через CSS */}
+        <div style={{ display: activeTab === 'works' ? 'block' : 'none', height: '100%', width: '100%' }}>
+          <VhsCategories />
+        </div>
+        
+        <div style={{ display: activeTab === 'about' ? 'block' : 'none', height: '100%', width: '100%' }}>
+          <About />
+        </div>
+        
+        <div style={{ display: activeTab === 'contacts' ? 'block' : 'none', height: '100%', width: '100%' }}>
+          <Contacts />
+        </div>
       </main>
 
       {/* Операционное меню Терминала */}

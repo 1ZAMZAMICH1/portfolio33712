@@ -1,5 +1,5 @@
 import React, { useState, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Preloader from './components/Preloader'; // ИМПОРТИРУЕМ
 import styles from './App.module.css';
 
@@ -11,10 +11,15 @@ const MenuPreviewPage = React.lazy(() => import('./pages/MenuPreviewPage'));
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+  
+  // Показывать CRT-полосы только на главной странице 
+  // (чтобы не портить качество фотографий портфолио внутри категорий)
+  const isHomePage = location.pathname === '/';
 
   return (
     <div className={styles.App}>
-      <div className={styles.globalTerminalOverlay}></div>
+      {isHomePage && <div className={styles.globalTerminalOverlay}></div>}
       {isLoading && <Preloader onLoaded={() => setIsLoading(false)} />}
       
       <Suspense fallback={<div className={styles.loader}>ЗАГРУЗКА...</div>}>
